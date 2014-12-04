@@ -1,5 +1,6 @@
-Leed Code
+Leet Code
 =========
 
-My Leed Code OJ source code
+My [Leet Code OJ](https://oj.leetcode.com/problems) source code
+
 
