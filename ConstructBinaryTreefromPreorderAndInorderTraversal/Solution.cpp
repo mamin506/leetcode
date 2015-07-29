@@ -26,40 +26,24 @@ public:
     TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
         if (preorder.size() == 0) return NULL;
 
-        TreeNode *tmp = new TreeNode(preorder.front());
-        if (preorder.size() == 1) return tmp;
+        return buildTree(preorder, 0, preorder.size(),
+                         inorder,  0, inorder.size());
+    }
 
-        vector<int> l_preorder;
-        vector<int> r_preorder;
-        vector<int> l_inorder;
-        vector<int> r_inorder;
-
-        bool findRoot = false;
-        for (int i = 0; i < inorder.size(); i++) {
-            if (inorder[i] == tmp.val) {
-                findRoot = true;
-                continue;
-            }
-
-            if (findRoot) {
-                r_inorder.push_back(inorder[i]);
-            } else {
-                l_inorder.push_back(inorder[i]);
-            }
+    TreeNode *buildTree(vector<int> &preorder, int preL, int preR, 
+                        vector<int> &inorder,  int inL,  int inR) {
+        TreeNode *tmp = new TreeNode(preorder[preL]);
+        
+        int n;
+        for (n = 0; n < inR - inL; n++) {
+            if (inorder[inL + n] == tmp->val)
+                break;
         }
 
-        for (int i = 0; i < l_inorder.size(); i++) {
-            l_preorder.push_back(preorder[i+1]);
-        }
-
-        for (int i = 0; i < r_inorder.size(); i++) {
-            r_preorder.push_back(preorder[i+1+l_inorder.size()]);
-        }
-
-        tmp.left = buildTree(l_preorder, l_inorder);
-        tmp.right = buildTree(r_preorder, r_inorder);
-
-        return tmp;
+        tmp->left  = ((n + inL) == inL)? NULL : buildTree(preorder, preL+1, preL+n+1,
+                                                          inorder,  inL,    inL+n);
+        tmp->right = ((n + inL) == inR-1)? NULL : buildTree(preorder, preL+n+1, preR,
+                                                            inorder, inL+n+1, inR);
     }
 };
 
