@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -10,49 +11,64 @@ using namespace std;
 class Solution {
 public:
     int calculate(string s) {
-        vector<string> RPNtoken;
-        RPNtoken = buildRPN(s);
-        return evalRPN(RPNtoken)
+        vector<string> RPNtokens;
+        RPNtokens = buildRPN(s);
+
+        return evalRPN(RPNtokens);
     }
 
-    // Reverse Polish Notation
+    void printVector(vector<string> v) {
+        for (vector<string>::iterator it = v.begin(); it != v.end(); it++) {
+            cout << *it << endl;
+        }
+        cout << endl;
+    }
+
+    // Build Reverse Polish Notation(Shunting-yard algorithm)
     vector<string> buildRPN(string &infix_str) {
-        stack<char> ops;
-        vector<string> token;
+        stack<string> ops;
+        vector<string> tokens;
         string nums;
+        int len = infix_str.length();
 
-        token.push_back("0");
-        token.push_back("0");
-        ops.push('+');
-
-        for (auto c : infix_str) {
-            if (isdigit(c)) {
-                nums += c;
-            } else {
-                token.push_back(nums);
-                nums = "";
-                if (c == '+' || c == '-') {
-                    if (ops.top() == '+' || ops.top() == '-') {
-                        token.push_back(ops.top());
-                        ops.pop;
-                    }
-                    ops.push(c);
-                } else if (c == '(') {
-                    ops.push(c);
-                } else if (c == ')') {
-                    while (ops.top() != '(') {
-                        token.push_back(ops.top());
-                        ops.pop();
-                    }
+        for (int i = 0; i < len; i++) {
+            if (infix_str[i] == '+' || infix_str[i] == '-') {
+                if (!ops.empty() && ops.top() != "(") {
+                    tokens.push_back(ops.top());
                     ops.pop();
                 }
+                ops.push(infix_str.substr(i,1));
+            } else if (infix_str[i] == '(') {
+                ops.push(infix_str.substr(i,1));
+            } else if (infix_str[i] == ')') {
+                //while (ops.top().compare("(") != 0) {
+                while (ops.top() != "(") {
+                    tokens.push_back(ops.top());
+                    ops.pop();
+                }
+                ops.pop();
+            } else if (infix_str[i] == ' ') {
+                continue;
+            } else {
+                nums = infix_str.substr(i, 1);
+                while (infix_str[i+1] >= '0' && infix_str[i+1] <= '9') {
+                    ++i;
+                    nums = nums + infix_str[i];
+                }
+                tokens.push_back(nums);
             }
         }
 
-        return token;
+        while (!ops.empty()) {
+            tokens.push_back(ops.top());
+            ops.pop();
+        }
+
+        return tokens;
     }
 
-    int evalRPN(vector<string> token) {
+    // eval RPN 
+    int evalRPN(vector<string> tokens) {
         stack<int> nums;
         int len = tokens.size();
         for (int i = 0; i < len; i ++) {             
@@ -91,9 +107,19 @@ public:
 int main(int argc, char *argv[]) {
     class Solution sol1;
 
-    string case1 = "1+1";
-
-    sol1.calculate(case1);
+    string case1 = "1+3";
+    string case2 = "10+23";
+    string case3 = "1+(2+2)";
+    string case4 = "1+2-3";
+    
+    int tmp = sol1.calculate(case1);
+    cout << "The case1 result is : " << tmp << endl;
+    tmp = sol1.calculate(case2);
+    cout << "The case2 result is : " << tmp << endl;
+    tmp = sol1.calculate(case3);
+    cout << "The case3 result is : " << tmp << endl;
+    tmp = sol1.calculate(case4);
+    cout << "The case4 result is : " << tmp << endl;
 
     return 0;
 }
