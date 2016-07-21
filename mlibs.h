@@ -10,8 +10,11 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <vector>
 #include <map>
 #include <algorithm>
+
+using namespace std;
 
 /*
  * Definition for singly-linked list.
@@ -44,4 +47,7 @@ struct TreeNode {
 };
 
 void printList(ListNode* head);
+void kmp_build_table(vector<int>& table, string& str);
+int  kmp_search(string& str, string& word);
+
 #endif
