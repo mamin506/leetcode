@@ -7,11 +7,13 @@
 #ifndef _MLIBS_H
 #define _MLIBS_H
 
+#include <utility>
 #include <iostream>
 #include <string>
 #include <stack>
 #include <vector>
 #include <map>
+#include <unordered_map>
 #include <algorithm>
 
 using namespace std;
