@@ -1,4 +1,4 @@
-#inlcude "../mlibs.h"
+#include "../mlibs.h"
 
 using namespace std;
 
