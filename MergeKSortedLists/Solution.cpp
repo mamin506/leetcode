@@ -24,7 +24,7 @@ class Solution {
         return partion(lists, 0, lists.size()-1);
     }
 
-    ListNode* partion(ListNode* lists, int s, int e) {
+    ListNode* partion(vector<ListNode*>& lists, int s, int e) {
         if (s == e) return lists[s];
         if (s < e) {
             int q = (s + e)/2;
