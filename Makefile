@@ -8,15 +8,15 @@ endif
 
 .PHONY: ${T} clean
 
+${T} : build/${T}
+	@echo "$^ done"
+
 build/${T} : build/${T}.o
 	g++ $(CPPFLAGS) -o $@ $^
 
 build/${T}.o : ${T}/Solution.cpp
 	@mkdir -p build
 	g++ -c $(CPPFLAGS) -o $@ $^
-
-${T} : build/${T}
-	echo "$^ done"
 
 clean:
 	rm build/*
