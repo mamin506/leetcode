@@ -1,25 +1,22 @@
-# set output directory
-OUTPUT_DIR = tmp/
+T := 3Sum
 
-# set target
-TARGET = 
+CPPFLAGS := -std=c++11
 
-# get all directories
-DIRECTORIES = $(dir $(wildcard */))
+ifeq ($(DEBUG),1)
+	CPPFLAGS += -g
+endif
 
-# get all cases could be made
-ALLCASE = $(patsubst $(OUTPUT_DIR), , $(DIRECTORIES))
+.PHONY: ${T} clean
 
-.PHONY: all clean 4Sum
+build/${T} : build/${T}.o
+	g++ $(CPPFLAGS) -o $@ $^
 
-all : 
-	@echo $(ALLCASE)
+build/${T}.o : ${T}/Solution.cpp
+	@mkdir -p build
+	g++ -c $(CPPFLAGS) -o $@ $^
 
-% : %/Solution.cpp
-	@echo here
-	@cd $(@D) && ls
+${T} : build/${T}
+	echo "$^ done"
 
-clean :
-	@echo cleaning
-
-FORCE :
+clean:
+	rm build/*
