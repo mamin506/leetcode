@@ -15,19 +15,19 @@ int minDistance(char* word1, char* word2) {
     // dp[i][j] represents the edit distance between word1[0..j-1] and word2[0..i-1]
     int *dp = (int *)calloc((len2 + 1) * (len1 + 1), sizeof(int));
     
-    // Initialize first row
-    for (int j = 0; j <= len1; j++) {
-        dp[j] = j;
-    }
-    
-    // Initialize first column
-    for (int i = 0; i <= len2; i++) {
-        dp[i * (len1 + 1)] = i;
-    }
-    
     // Fill the dp table
-    for (int i = 1; i <= len2; i++) {
-        for (int j = 1; j <= len1; j++) {
+    for (int i = 0; i <= len2; i++) {
+        for (int j = 0; j <= len1; j++) {
+            if (i == 0) {
+                dp[j] = j;
+                continue;
+            }
+
+            if (j == 0) {
+                dp[i * (len1 + 1)] = i;
+                continue;
+            }
+
             if (word1[j-1] == word2[i-1]) {
                 dp[i * (len1 + 1) + j] = dp[(i-1) * (len1 + 1) + (j-1)];
             } else {
