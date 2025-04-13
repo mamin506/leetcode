@@ -1,6 +1,3 @@
-#include <limits.h>
-#include <stdlib.h>
-
 /*
  * @lc app=leetcode id=322 lang=c
  *
