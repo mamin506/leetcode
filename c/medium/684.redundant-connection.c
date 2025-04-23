@@ -21,17 +21,33 @@ int unionFind(int *parent, int i)
     return root;
 }
 
-void unionUnite(int *parent, int i, int j)
+void unionUnite(int *parent, int *rank, int i, int j)
 {
-    parent[unionFind(parent, i)] = unionFind(parent, j);
+    int iRoot = unionFind(parent, i);
+    int jRoot = unionFind(parent, j);
+
+    if (iRoot == jRoot)
+        return;
+
+    if (rank[iRoot] < rank[jRoot]) {
+        parent[iRoot] = jRoot;
+    } else if (rank[jRoot] < rank[iRoot]) {
+        parent[jRoot] = iRoot;
+    } else {
+        parent[jRoot] = iRoot;
+        rank[iRoot]++;
+    }
 }
 
 int* findRedundantConnection(int** edges, int edgesSize, int* edgesColSize, int* returnSize) {
     int *result = (int *)malloc(2 * sizeof(int));
     int parent[1001];
+    int rank[1001];
 
-    for (int i = 0; i < edgesSize; i++)
+    for (int i = 0; i < edgesSize; i++) {
         parent[i] = i;
+        rank[i] = 0;
+    }
 
     for (int i = 0; i < edgesSize; i++) {
         int a = edges[i][0];
@@ -44,7 +60,7 @@ int* findRedundantConnection(int** edges, int edgesSize, int* edgesColSize, int*
             return result;
         }
 
-        unionUnite(parent, a, b);
+        unionUnite(parent, rank, a, b);
     }
 
     *returnSize = 0;
