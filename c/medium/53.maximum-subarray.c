@@ -41,7 +41,8 @@ int maxSubArrayHelper(int* nums, int left, int right) {
     if (left == right)
         return nums[left];
 
-    int mid = (left + right) / 2    return fmax(
+    int mid = (left + right) / 2;
+    return fmax(
         fmax(maxSubArrayHelper(nums, left, mid),
              maxSubArrayHelper(nums, mid + 1, right)),
         maxCrossingSum(nums, left, mid, right)
@@ -52,4 +53,3 @@ int maxSubArray(int* nums, int numsSize) {
     return maxSubArrayHelper(nums, 0, numsSize - 1);
 }
 // @lc code=end
-
